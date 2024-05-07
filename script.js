@@ -1,18 +1,19 @@
 const player = document.querySelector('.player__video');
 const progress = document.querySelector('.progress');
 const progressBar = document.querySelector('.progress__filled');
-const playButton = document.querySelector('.player__button');
+const toggleButton = document.querySelector('.toggle'); // Select the toggle button
 const volumeSlider = document.querySelector('input[name="volume"]');
 const playbackRateSlider = document.querySelector('input[name="playbackRate"]');
+const rewindButton = document.querySelector('.rewind'); // Select the rewind button
 const skipButtons = document.querySelectorAll('[data-skip]');
 
 function togglePlay() {
   if (player.paused) {
     player.play();
-    playButton.textContent = '❚ ❚';
+    toggleButton.textContent = '❚ ❚';
   } else {
     player.pause();
-    playButton.textContent = '►';
+    toggleButton.textContent = '►';
   }
 }
 
@@ -35,8 +36,19 @@ function handleProgressClick(e) {
 }
 
 player.addEventListener('timeupdate', updateProgressBar);
-playButton.addEventListener('click', togglePlay);
+toggleButton.addEventListener('click', togglePlay);
 volumeSlider.addEventListener('input', handleRangeUpdate);
 playbackRateSlider.addEventListener('input', handleRangeUpdate);
 skipButtons.forEach(button => button.addEventListener('click', skip));
 progress.addEventListener('click', handleProgressClick);
+
+// Export the functions if you are using Cypress
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    togglePlay,
+    updateProgressBar,
+    skip,
+    handleRangeUpdate,
+    handleProgressClick
+  };
+}
